@@ -6,7 +6,7 @@ package:
     version: {{ version }}
 source:
      - url: https://launchpad.net/escript-finley/3.0+/{{ version }}/+download/python_escript_{{ version }}.tar.gz
-       sha256: 7e35b5d48da6a09e0ffa181bddd6c08c0738ce979d87c5f7af968f93b10bcc76
+       sha256: 99c5bc9e7262fb0baef5d9aa3a99bcbf3965b9d718835c6b56c516e39bb6c992
 build:
     skip: True  # [win and (py!=37 or vc<14)]
     number: 0
