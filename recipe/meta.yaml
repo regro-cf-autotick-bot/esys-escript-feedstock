@@ -8,7 +8,7 @@ source:
      - url: https://launchpad.net/escript-finley/3.0+/{{ version }}/+download/python_escript_{{ version }}.tar.gz
        sha256: 7e35b5d48da6a09e0ffa181bddd6c08c0738ce979d87c5f7af968f93b10bcc76
 build:
-    skip: True  # [win]
+    skip: True  # [win and (py!=37 or vc<14)]
     number: 0
 requirements:
     build:
@@ -22,28 +22,39 @@ requirements:
     host:
         - boost-cpp
         - boost
-        - cppunit
+        - cppunit # [linux]
+        - numpy ==1.15.4 # [win]
         - python 
-        - matplotlib
+        - matplotlib # [linux]
+        - matplotlib ==2.2.2 # [win]
         - gdal
-        - libopenblas
-        - libgomp
+        - libopenblas # [linux]
+        - libgomp # [linux]
         - pyproj 
         - scipy 
-        - suitesparse
+        - suitesparse # [linux]
+        - sympy ==1.1.1 # [win]
+        - gmsh # [win]
+        - mumps # [win]
     run:
         - boost-cpp
         - boost
-        - numpy
+        - numpy # [linux]
+        - numpy ==1.15.4 # [win]
         - python
-        - matplotlib
+        - matplotlib # [linux]
+        - matplotlib ==2.2.2 # [win]
         - gdal 
         - pyproj
         - scipy
+        - sympy ==1.1.1 # [win]
+        - gmsh # [win]
+        - mumps # [win]
 test:
     commands:
         - run-escript -c
-        - run-escript /tmp/release_sanity.py
+        - run-escript /tmp/release_sanity.py # [linux]
+        - run-escript %TEMP%/release_sanity.py # [win]
 about:
     home: https://launchpad.net/escript-finley
     summary: esys-escript is a programming tool for implementing mathematical 
@@ -65,3 +76,4 @@ about:
 extra:
     recipe-maintainers:
         - aellery
+
