@@ -1,51 +1,59 @@
-{% set version = "5.4" %}
+{% set version = "5.6" %}
 
 package:
     name: esys-escript
     version: {{ version }}
 source:
-    - url: https://launchpad.net/escript-finley/3.0+/{{ version }}/+download/python-escript_{{ version }}.tar.gz
-      sha256: 61e1b3b5451d1eca06ab7c3905adfdc41906ed69e8388bfc4db094b944eb403b
-      folder: escript
+    - url: https://launchpad.net/escript-finley/3.0+/{{ version }}/+download/python_escript_{{ version }}.tar.gz
+      sha256: 99c5bc9e7262fb0baef5d9aa3a99bcbf3965b9d718835c6b56c516e39bb6c992
 build:
-    skip: True  # [osx]
-    skip: True  # [win]
-    skip: True  # [py!=27]
-    number: '0'
+    skip: True  # [win and (py!=37 or vc<14)]
+    number: 0
 requirements:
     build:
         - {{ compiler('cxx') }}
         - svn
-        - scons >3.0.5
+        - scons >3.0.5 
         - cmake
         - make
-        - python 2.7.*
-        - llvm-openmp  # [osx]
+        - python
+        - git
     host:
-        - boost-cpp 
+        - boost-cpp
         - boost
+        - cppunit # [linux]
+        - numpy ==1.15.4 # [win]
         - python 
-        - suitesparse
-        - gdal 
+        - matplotlib # [linux]
+        - matplotlib ==2.2.2 # [win]
+        - gdal
+        - libopenblas # [linux]
+        - libgomp # [linux]
         - pyproj 
         - scipy 
-        - sympy
-        - llvm-openmp  # [osx]
+        - suitesparse # [linux]
+        - sympy ==1.1.1 # [win]
+        - gmsh # [win]
+        - mumps # [win]
     run:
-        - boost-cpp 
+        - boost-cpp
         - boost
-        - numpy 
+        - numpy # [linux]
+        - numpy ==1.15.4 # [win]
         - python
-        - suitesparse
+        - matplotlib # [linux]
+        - matplotlib ==2.2.2 # [win]
         - gdal 
         - pyproj
         - scipy
-        - sympy
-        - llvm-openmp  # [osx]
+        - sympy ==1.1.1 # [win]
+        - gmsh # [win]
+        - mumps # [win]
 test:
     commands:
         - run-escript -c
-        - run-escript /tmp/release_sanity.py
+        - run-escript /tmp/release_sanity.py # [linux]
+        - run-escript %TEMP%/release_sanity.py # [win]
 about:
     home: https://launchpad.net/escript-finley
     summary: esys-escript is a programming tool for implementing mathematical 
